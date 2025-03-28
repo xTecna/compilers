@@ -90,6 +90,8 @@ RUN set -xe && \
 
 # Check for latest version here: https://jdk.java.net
 RUN set -xe && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends ca-certificates-java openjdk-11-jre-headless:amd64 && \
     curl -fSsL "https://download.java.net/java/GA/jdk13.0.1/cec27d702aa74d5a8630c65ae61e4305/9/GPL/openjdk-13.0.1_linux-x64_bin.tar.gz" -o /tmp/openjdk13.tar.gz && \
     mkdir /usr/local/openjdk13 && \
     tar -xf /tmp/openjdk13.tar.gz -C /usr/local/openjdk13 --strip-components=1 && \
@@ -247,12 +249,12 @@ RUN set -xe && \
       rm -rf /tmp/*; \
     done
 
-# Check for latest version here: https://sourceforge.net/projects/fbc/files/Binaries%20-%20Linux
+# Check for latest version here: https://sourceforge.net/projects/fbc/files
 ENV FBC_VERSIONS \
       1.07.1
 RUN set -xe && \
     for VERSION in $FBC_VERSIONS; do \
-      curl -fSsL "https://downloads.sourceforge.net/project/fbc/Binaries%20-%20Linux/FreeBASIC-$VERSION-linux-x86_64.tar.gz" -o /tmp/fbc-$VERSION.tar.gz && \
+      curl -fSsL "https://sourceforge.net/projects/fbc/files/Older%20versions/$VERSION/FreeBASIC-$VERSION-linux-x86_64.tar.gz" -o /tmp/fbc-$VERSION.tar.gz && \
       mkdir /usr/local/fbc-$VERSION && \
       tar -xf /tmp/fbc-$VERSION.tar.gz -C /usr/local/fbc-$VERSION --strip-components=1 && \
       rm -rf /tmp/*; \
@@ -358,7 +360,7 @@ ENV GPROLOG_VERSIONS \
       1.4.5
 RUN set -xe && \
     for VERSION in $GPROLOG_VERSIONS; do \
-      curl -fSsL "http://gprolog.org/gprolog-$VERSION.tar.gz" -o /tmp/gprolog-$VERSION.tar.gz && \
+      curl -fSsL "http://gprolog.org/old_versions/gprolog-$VERSION.tar.gz" -o /tmp/gprolog-$VERSION.tar.gz && \
       mkdir /tmp/gprolog-$VERSION && \
       tar -xf /tmp/gprolog-$VERSION.tar.gz -C /tmp/gprolog-$VERSION --strip-components=1 && \
       rm /tmp/gprolog-$VERSION.tar.gz && \
@@ -521,8 +523,9 @@ RUN set -xe && \
     rm -rf /tmp/*
 
 # Check for latest version here: https://groovy.apache.org/download.html
+ENV GROOVY_VERSION 3.0.3
 RUN set -xe && \
-    curl -fSsL "https://dl.bintray.com/groovy/maven/apache-groovy-binary-3.0.3.zip" -o /tmp/groovy.zip && \
+    curl -fSsL "https://groovy.jfrog.io/artifactory/dist-release-local/groovy-zips/apache-groovy-binary-$GROOVY_VERSION.zip" -o /tmp/groovy.zip && \
     unzip /tmp/groovy.zip -d /usr/local && \
     rm -rf /tmp/*
 
